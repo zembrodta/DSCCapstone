@@ -1,0 +1,117 @@
+---
+title: "DSC Capstone"
+author: "Allison Zembrodt"
+date: "2/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Import Data Set
+
+```{r}
+severeinjury <- read_csv("~/Downloads/severeinjury.csv", 
+                         col_types = cols(ID = col_character()))
+colnames(severeinjury)[colnames(severeinjury)=="Primary NAICS"] <- "naics"
+colnames(severeinjury)[colnames(severeinjury)=="Part of Body"] <- "bodyPart"
+```
+
+
+#Cleaning
+
+###Nulls
+```{r}
+Nulls= severeinjury%>%
+  summarise_all(funs(sum(is.na(.))))
+Nulls
+```
+There are some columns that are almost entirely null. For right now, I am leaving everything because I do not know what we might want to do in the future. 
+
+There are three records that do not have a NAISC code. Since we are going to be breaking up the records into two different files, the service sector and the non service sector, we will need to get rid of those. 
+
+```{r}
+severeinjury = severeinjury %>%
+  drop_na(naics)
+```
+
+
+I want to make sure that all the records have a full 6 digit naics code before I remove them. 
+```{r}
+severeWithdigits = severeinjury %>%
+  mutate(NumberOfNaics = nchar(naics))
+
+max(severeWithdigits$NumberOfNaics)
+min(severeWithdigits$NumberOfNaics)
+```
+
+
+The max number of digits is 6 which is good, but the minimum is 2. Let's check how many records have less than 6. 
+
+```{r}
+sum(severeWithdigits$NumberOfNaics <= 5)
+```
+
+There are 131 records that have naisc codes that either need to be handled seperately or just thrown out, for now I am going to remove them by putting them in a different data set. 
+
+```{r}
+NotRealNaisc = severeWithdigits %>%
+  filter( NumberOfNaics <= 5)
+
+Injury = severeWithdigits %>%
+  filter( NumberOfNaics == 6)
+```
+
+##Seperate the data sets into Service and NonService
+
+```{r}
+NonService = Injury %>%
+  filter(naics < 400000) 
+
+Service = Injury %>%
+  filter( naics >= 400000)
+```
+
+#Percentage Hospitalized Injuries in Service and NonService Job Sectors
+```{r}
+sum(NonService$Hospitalized)/nrow(NonService)
+sum(Service$Hospitalized)/nrow(Service)
+```
+
+#Top 10 Nature Titles for Service 
+
+```{r}
+Top10Service = Service %>%
+  group_by(NatureTitle) %>%
+  summarize( countSer = n()) %>%
+  filter(countSer > 190) %>%
+  mutate(sector = "NonService")
+
+ggplot(Top10Service, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity")+coord_flip()
+```
+
+
+#Top 10 Nature Titles for NonService 
+
+```{r}
+Top10NonService = NonService %>%
+  group_by(NatureTitle) %>%
+  summarize( countNon = n()) %>%
+  filter(countNon > 250) %>%
+  mutate(sector = "NonService")
+
+ggplot(Top10NonService, aes(reorder(NatureTitle, countNon), countNon))+geom_bar(stat= "identity")+coord_flip()
+```
+
+The top 4 of the categories remain the same for both sectors. It is after that that we see the differences. 
+
+```{r}
+Top10PartService = Service %>%
+  group_by() %>%
+  summarize( countSer = n()) %>%
+  filter(countSer > 190) %>%
+  mutate(sector = "NonService")
+```
+
