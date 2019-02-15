@@ -6,17 +6,25 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,  warning=FALSE)
 library(tidyverse)
+library(lubridate)
+library(plotly)
+library(knitr)
+library(reshape2)
 ```
 
 # Import Data Set
 
 ```{r}
-severeinjury <- read_csv("~/Downloads/severeinjury.csv", 
-                         col_types = cols(ID = col_character()))
+ severeinjury <- read_csv("~/Downloads/severeinjury.csv", 
+    col_types = cols(Address2 = col_skip(), 
+    EventDate = col_date(format = "%m/%d/%Y"), 
+    ID = col_character(), Inspection = col_skip()))
 colnames(severeinjury)[colnames(severeinjury)=="Primary NAICS"] <- "naics"
-colnames(severeinjury)[colnames(severeinjury)=="Part of Body"] <- "bodyPart"
+colnames(severeinjury)[colnames(severeinjury)=="Part of Body Title"] <- "bodyPart"
+severeinjury$month = month(severeinjury$EventDate)
+severeinjury$year= year(severeinjury$EventDate)
 ```
 
 
@@ -26,11 +34,17 @@ colnames(severeinjury)[colnames(severeinjury)=="Part of Body"] <- "bodyPart"
 ```{r}
 Nulls= severeinjury%>%
   summarise_all(funs(sum(is.na(.))))
-Nulls
+Nulls=melt(Nulls)
+kable(Nulls)
 ```
-There are some columns that are almost entirely null. For right now, I am leaving everything because I do not know what we might want to do in the future. 
 
-There are three records that do not have a NAISC code. Since we are going to be breaking up the records into two different files, the service sector and the non service sector, we will need to get rid of those. 
+
+
+
+There are some columns that are almost entirely null. For right now, I am leaving everything because I do not know what we might want to do in the future. It would make sense for secondary source to be mainly nulll, because sometimes there is not a secondary source. 
+
+From this, we also see that there are three records that do not have a NAISC code. Since we are going to be breaking up the records into two different files, the service sector and the non service sector, we will need to get rid of those. 
+
 
 ```{r}
 severeinjury = severeinjury %>%
@@ -67,18 +81,34 @@ Injury = severeWithdigits %>%
 ##Seperate the data sets into Service and NonService
 
 ```{r}
-NonService = Injury %>%
-  filter(naics < 400000) 
 
+Utilities = Injury %>% 
+  filter(naics >= 220000 & naics <230000)
+  
 Service = Injury %>%
   filter( naics >= 400000)
+
+Service = rbind(Service, Utilities)
+
+NonServiceTop = Injury %>%
+  filter(naics < 400000 & naics >= 230000) 
+
+NonServiceBottom = Injury %>%
+  filter(naics < 220000)
+
+NonService = rbind(NonServiceTop, NonServiceBottom)
 ```
+
+
+
 
 #Percentage Hospitalized Injuries in Service and NonService Job Sectors
 ```{r}
 sum(NonService$Hospitalized)/nrow(NonService)
 sum(Service$Hospitalized)/nrow(Service)
 ```
+
+WRITE SOMETHING HERE
 
 #Top 10 Nature Titles for Service 
 
@@ -107,11 +137,115 @@ ggplot(Top10NonService, aes(reorder(NatureTitle, countNon), countNon))+geom_bar(
 
 The top 4 of the categories remain the same for both sectors. It is after that that we see the differences. 
 
+#Body Parts 
 ```{r}
-Top10PartService = Service %>%
-  group_by() %>%
-  summarize( countSer = n()) %>%
-  filter(countSer > 190) %>%
-  mutate(sector = "NonService")
+Top10BodyPartService = Service %>%
+  group_by(bodyPart) %>%
+  summarize( count = n()) %>%
+  filter(count >500)
+
+ggplot(Top10BodyPartService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity")+coord_flip()
 ```
+
+
+```{r}
+Top10BodyPartNonService = NonService %>%
+  group_by(bodyPart) %>%
+  summarize( count = n()) %>%
+  filter(count >500)
+
+ggplot(Top10BodyPartNonService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity")+coord_flip()
+```
+
+#Time Data
+ 
+ Lets look and see if there are any points from the last 3 years that have extremely high points of data. 
+```{r}
+ServiceDate = Service %>%
+  group_by(month,year) %>%
+  summarize(numInjuries = n()) %>%
+  mutate(FullDate = paste(month,year, sep = "/"))
+
+NonServiceDate = NonService %>%
+  group_by(month,year) %>%
+  summarize(numInjuries = n()) %>%
+  mutate(FullDate = paste(month,year, sep = "/"))
+
+p=ggplot()+ geom_line(data=ServiceDate, aes(group=1,x= month,y= numInjuries), color = "blue")+ geom_line(data=NonServiceDate, aes(group=1,x= month,y= numInjuries), color = "red")+facet_wrap(~ year, ncol = 4)
+ggplotly(p)
+```
+
+Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the tredns seem to follow eachother. Which makes me think there is some outside force that is making them do more reports that month etc. We seem to see spikes in September and october. 
+
+
+#What happened in Auguest of 2016? 
+
+
+```{r}
+Top10ServiceAug2016 = Service %>%
+  filter(month == 8, year == 2016) %>%
+  group_by(NatureTitle) %>%
+  summarize( countSer = n()) %>%
+  filter(countSer>10)
+  
+
+ggplot(Top10ServiceAug2016, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity")+coord_flip()
+```
+
+```{r}
+Top10NonServiceAug2016 = NonService %>%
+  filter(month == 8, year == 2016) %>%
+  group_by(NatureTitle) %>%
+  summarize( count = n()) %>%
+  filter(count >15)
+  
+
+ggplot(Top10NonServiceAug2016, aes(reorder(NatureTitle, count), count))+geom_bar(stat= "identity")+coord_flip()
+```
+We see a lot more heat and light injuries, I wonder if the temeperature was extremely high that year in september? 
+
+```{r}
+InjuryAug = Injury %>%
+  filter( month ==8, year == 2016)
+nrow(InjuryAug)/nrow(Injury)
+```
+
+#What is the top injury per state? 
+
+Do we have an even distribution of records across states? 
+
+```{r}
+ServiceStates = Service %>%
+  group_by(State) %>%
+  summarise(ServiceRecords = n())
+NonServiceStates = NonService %>%
+  group_by(State)%>%
+  summarise(NonServiceRecords = n())
+StatesRecords = left_join(ServiceStates, NonServiceStates)
+#View(StatesRecords)
+```
+
+```{r}
+ServiceStates$ServiceRank= NA
+ServiceStates$ServiceRank[order(-ServiceStates$ServiceRecords)]= 1:nrow(ServiceStates)
+
+NonServiceStates$NonServiceRank= NA
+NonServiceStates$NonServiceRank[order(-NonServiceStates$NonServiceRecords)]= 1:nrow(NonServiceStates)
+
+
+StateRecords = left_join(ServiceStates, NonServiceStates)
+```
+Top 20 states for service and non service are different. This is semi interesting. 
+
+
+A rank of 1 means that that state had the most records. 
+
+```{r}
+StateRecords = StateRecords %>%
+  select(State,ServiceRank, NonServiceRank)
+
+kable(StateRecords)
+```
+
+
 
