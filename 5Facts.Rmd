@@ -1,6 +1,5 @@
 ---
 title: "5 Facts about the Injury Data Set"
-author: "Allison Zembrodt"
 date: '`r Sys.Date()`'
 output:
   html_document:
@@ -23,6 +22,7 @@ library(plotly)
 library(knitr)
 library(reshape2)
 library(cowplot)
+library(readxl)
 ```
 #Data Set
 
@@ -30,7 +30,7 @@ For the first section of our project, we are focusing on the OSHA data set and s
 
 ##Packages 
 
-I am using the tidyverse for basic cleaning. Lubridate for making handling dates easier. Plotly to make ggplot visualizations interative. Knitr to make easy tables in Rmarkdown. Reshape2 to transofrm some of our data. These will all need to be installed in order for this code to be runnable. 
+I am using the tidyverse for basic cleaning. Lubridate for making handling dates easier. Plotly to make ggplot visualizations interactive. Knitr to make easy tables in Rmarkdown. Reshape2 to transform some of our data. These will all need to be installed in order for this code to be runnable.
 
 ##Import Data
 
@@ -141,7 +141,7 @@ Injury = severeWithdigits %>%
 
 ##Seperate the data sets into Service and NonService 
 
-We will be using the following chart to seperate our data set. The numbers in the far right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.  
+We will be using the following chart to separate our data sets. The numbers in the far-right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.
 
 ![NAICS Codes.](~/Documents/GitHub/DSCCapstone/figures/NAICSCodes.png)
 
@@ -195,7 +195,7 @@ AmputationPercentage = data.frame( Sector, Percentage)
 kable( AmputationPercentage)
 ```
 
-This proportion makes sense to us. The nonService sectors are generally more dangerous, so it seems likely that they have the higher amputation rate. The amputation rates seem very high. This is probably due to the fact that amputations are something that must be reported, so it makes sense that they tke up a large poriton of our data. However, this may be a data qualitiy issue if in reality our porportion on amputations is just being inflated because they must be reported. 
+This proportion makes sense to us. The nonService sectors are generally more dangerous, so it seems likely that they have the higher amputation rate. The amputation rates seem very high. This is probably due to the fact that amputations are something that must be reported, so it makes sense that they take up a large portion of our data. However, this may be a data quality issue if in reality our proportion on amputations is just being inflated because they must be reported.
 
 
 ##Fact 3: Top 10 Nature Titles for Service and Non Service  
@@ -275,14 +275,12 @@ p=ggplot()+ geom_line(data=ServiceDate, aes(group=1,x= month,y= numInjuries), co
 ggplotly(p)
 ```
 
-Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the trends seem to follow each other. Which makes me think there is some outside force that is making them do more reports that month etc. We seem to see spikes in September and October. One inital thought is that those are some of the hotter months, so there could be a rise in heat stokes and dehydration. I would like to follow up and get more information on what happened in August of 2016 to cause such a huge spike. 
+Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the trends seem to follow each other. This makes me think there is some outside force that is making them do more reports that month. We seem to see spikes in September and October. One inital thought is that those are some of the hotter months, so there could be a rise in heat stokes and dehydration. I would like to follow up and get more information on what happened in August of 2016 to cause such a huge spike. 
 
 
 ###BONUS: What happened in August of 2016? 
 
-
 ```{r}
-
 Top10ServiceAug2016 = Service %>%
   filter(month == 8, year == 2016) %>%
   group_by(NatureTitle) %>%
@@ -307,13 +305,11 @@ subplot( p6, p7, margin = .06) %>%layout(title = "Aug. 2016 Injury Types")
 ```
 
 
-We see a lot more heat and light injuries, I wonder if the temeperature was extremely high that year in september? This would be a situtation where outside weather data would provide more background.  
-
+We see a lot more heat and light injuries, I wonder if the temperature was extremely high that year in September? This would be a situation where outside weather data would provide more background.
 
 ##Fact 6: Are the most popular states for service injuries the same as the most popular states for non service injuires? 
 
-
-To accomplish this, I decided it would be easier to rank the states by number of records. So, if a state is ranked 1 that means that it has the most number of records, or injuires. If a state is ranked in the 50s that means there were hardly any injuries recorded. 
+To accomplish this, I decided it would be easier to rank the states by number of records. So, if a state is ranked 1 that means that state has the greatest number of records, or injuries. If a state is ranked in the 50s that means, there were hardly any injuries recorded. Surprisingly, there are some states like New Jersey that rank very high in amount of Service injuries (8), but it is ranked in the middle for NonService (18). The differences between where the states fall in the non service and service states probably has something to do with the job markets in those areas. 
 
 
 ```{r, warning=FALSE}
@@ -347,9 +343,38 @@ StateRecordsDiff = StateRecords %>%
   mutate( difference = abs(ServiceRank-NonServiceRank))
 
 kable(StateRecordsDiff)
-
-
 ```
 
+
+#ONET Data Fact 
+
+We have barely touched the surface of this data set. It took us a long time to realize what was the best way to read/interpret it. We decided to only use the columns for title, SOC number, Element ID, Element Name, and Data Value. These are the values we know how to interpret right now, so these are what we will be using. For a basic fact, we wanted to see the top 5 jobs that involve working in extreme temperatures. 
+
+##Import Data Set
+```{r}
+WorkContext <- read_excel("~/Downloads/Work Context.xlsx")
+
+WorkContext = WorkContext %>%
+  filter( WorkContext$`Scale Name` == "Context")
+```
+
+##Fact 7: Which Occupations have the highest Very Hot or Cold Temperatures? 
+
+```{r}
+HotCold = WorkContext %>%
+  filter( `Element Name` == "Very Hot or Cold Temperatures")
+
+Top5HotCold = HotCold %>%
+  filter(`Data Value` >4.73) %>%
+  select( Title, `Element Name`, `Data Value`)
+
+Top5HotCold = Top5HotCold[order(Top5HotCold$`Data Value`),]
+kable(Top5HotCold)
+```
+
+
+#Conclusion 
+
+Splitting the injuries data set has led us to some very interesting conclusions. There is clearly a difference in the amount of injuries, nature of injuries, and parts of the body that they affect. Once we are able to dig deeper into our data, we will be able to come up with even more visualizations to showcase the differences between the service and non-service sector jobs and hopefully come up with our interactive dashboard to allow the user to narrow down into specific jobs they are interested in. 
 
 
