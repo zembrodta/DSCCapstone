@@ -1,23 +1,43 @@
 ---
-title: "DSC Capstone"
+title: "5 Facts about the Injury Data Set"
 author: "Allison Zembrodt"
-date: "2/12/2019"
-output: html_document
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+    fig_caption: true
+    toc: true
+    fig_width: 9
+    fig_height: 6
+    theme: cosmo
+    highlight: tango
+    code_folding: hide
+    self_contained: no
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,  warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE,  warning=FALSE, message = FALSE)
 library(tidyverse)
 library(lubridate)
 library(plotly)
 library(knitr)
 library(reshape2)
+library(cowplot)
 ```
+#Data Set
 
-# Import Data Set
+For the first section of our project, we are focusing on the OSHA data set and separating the jobs into service sector jobs and non-service sector jobs. All of my code and the data set are available directly on Alli's github https://github.com/zembrodta/DSCCapstone.
+
+##Packages 
+
+I am using the tidyverse for basic cleaning. Lubridate for making handling dates easier. Plotly to make ggplot visualizations interative. Knitr to make easy tables in Rmarkdown. Reshape2 to transofrm some of our data. These will all need to be installed in order for this code to be runnable. 
+
+##Import Data
+
+The following code imports our data set. Right off the bat we decided to remove the column Address2, and Inspection because they were mostly null. We also made sure to convert the eventdate column into a data format and make the ID column a character because there are some weird values which made it not numeric. I also added columns for month and year so we could do some analysis based on time of year. 
 
 ```{r}
- severeinjury <- read_csv("~/Downloads/severeinjury.csv", 
+ severeinjury <- read_csv("~/Documents/GitHub/DSCCapstone/datasets/severeinjury.csv", 
     col_types = cols(Address2 = col_skip(), 
     EventDate = col_date(format = "%m/%d/%Y"), 
     ID = col_character(), Inspection = col_skip()))
@@ -28,9 +48,13 @@ severeinjury$year= year(severeinjury$EventDate)
 ```
 
 
-#Cleaning
+##Cleaning
+Now that our dataset is imported, we would like to check to see if data has duplicate values of any nulls or duplicate values. 
 
-###Nulls
+###Missing Data 
+
+Let's print out a complete summary of the number of missings in each column. The code below summarizes each column and counts the number of nulls. 
+
 ```{r}
 Nulls= severeinjury%>%
   summarise_all(funs(sum(is.na(.))))
@@ -38,21 +62,57 @@ Nulls=melt(Nulls)
 kable(Nulls)
 ```
 
+For the most part our data looks pretty good. There are two columns that are about 60% null, but those are about secondary sources. It would make sense for secondary source to be mainly null, because sometimes there are not always two sources. For right now, I am going to leave those columns because we aren't really using them. 
 
-
-
-There are some columns that are almost entirely null. For right now, I am leaving everything because I do not know what we might want to do in the future. It would make sense for secondary source to be mainly nulll, because sometimes there is not a secondary source. 
-
-From this, we also see that there are three records that do not have a NAISC code. Since we are going to be breaking up the records into two different files, the service sector and the non service sector, we will need to get rid of those. 
-
+What I am more concerned about is the 3 nulls in the NAISC code column. Since we are going to be breaking up the records into two different files, the service sector and the non-service sector, we will need to get rid of those. I will use the function, drop_na in the tidyverse to remove these values. I am also going to get rid of the 2 null values in the amputation column because we may use that for some analysis and it will mess up any counting and averaging. 
 
 ```{r}
 severeinjury = severeinjury %>%
-  drop_na(naics)
+  drop_na(naics, Amputation)
 ```
 
+###Duplicate Data
 
-I want to make sure that all the records have a full 6 digit naics code before I remove them. 
+Since the id column should be unique, I am going to check to make sure the number of rows in the severeInjury data equals the number of unique Ids. 
+
+```{r}
+length(unique(severeinjury$ID))
+nrow(severeinjury)
+```
+There are 5 id values that are the same. So, ID is either not unique or we have some duplicates. Let's investigate further. 
+
+```{r}
+NotUniqueIDs = severeinjury %>%
+  group_by(ID) %>%
+  summarise( count = n()) %>%
+  filter( count >1)
+
+SameIDs = severeinjury %>%
+  filter( ID == "2015010015" | ID == "2015010016" | ID == "2015010018" |ID =="2015010020" | ID =='2015010021') %>% select (ID, EventDate, Employer, City, State, bodyPart) 
+SameIDs = SameIDs[order(SameIDs$ID),]
+kable(SameIDs)
+```
+
+So, even though they have the same ID these are unique records. This is kind of concerning because it means that ID is not unique. I am going to do a check that NatureTitle, Day and Employer are all unique. To me, that would be a unique combination. 
+
+```{r, echo = TRUE}
+NatureDayEmployer = severeinjury %>%
+  group_by(NatureTitle, EventDate, Employer)
+
+nrow(NatureDayEmployer) == nrow(severeinjury)
+```
+
+They are the same, so I am going to assume that we have unique values. I would like to check with the CDC/ NIOSH representatives to ensure that this was a correct assumption and make sure they are aware that ID is not completely unique. 
+
+
+#Non Service and Service Jobs 
+
+One of the big goals of our project is to see if there are any differences between service sector jobs and non-service sector jobs. We will be looking at the different types of injuries common in the two sectors, the difference in body parts, and the time of year the injuries occur. Before we begin that analysis, I we will need to separate the data set. We will be doing this by using NAICS codes. 
+
+##Naics Code Digit Checks
+
+I want to make sure that all the records have a full 6 digit naics code before I remove them. I saw something suspicious when I was looking through the data manually and I want to double check that everything has the correct number of digits based on the chart we are using. 
+
 ```{r}
 severeWithdigits = severeinjury %>%
   mutate(NumberOfNaics = nchar(naics))
@@ -62,13 +122,13 @@ min(severeWithdigits$NumberOfNaics)
 ```
 
 
-The max number of digits is 6 which is good, but the minimum is 2. Let's check how many records have less than 6. 
+The max number of digits is 6 which is what we expected, but the minimum is 2. This is concerning, because we do not know how to interpret the 2 digit codes. Let's check how many records have less than 6 to see if it is significant enough to worry about them. The code below checks to see how many are less than 6. 
 
 ```{r}
 sum(severeWithdigits$NumberOfNaics <= 5)
 ```
 
-There are 131 records that have naisc codes that either need to be handled seperately or just thrown out, for now I am going to remove them by putting them in a different data set. 
+There are 131 records that have naics codes that either need to be handled separately or just thrown out, for now I am going to remove them by putting them in a different data set in case we want to investigate them further later. 
 
 ```{r}
 NotRealNaisc = severeWithdigits %>%
@@ -78,10 +138,16 @@ Injury = severeWithdigits %>%
   filter( NumberOfNaics == 6)
 ```
 
-##Seperate the data sets into Service and NonService
+
+##Seperate the data sets into Service and NonService 
+
+We will be using the following chart to seperate our data set. The numbers in the far right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.  
+
+![NAICS Codes.](~/Documents/GitHub/DSCCapstone/figures/NAICSCodes.png)
+
+
 
 ```{r}
-
 Utilities = Injury %>% 
   filter(naics >= 220000 & naics <230000)
   
@@ -99,122 +165,158 @@ NonServiceBottom = Injury %>%
 NonService = rbind(NonServiceTop, NonServiceBottom)
 ```
 
+#Fun Facts 
+After all of our cleaning, it is finally time to start looking at interesting facts in our data. 
 
+##Fact 1: Percentage Hospitalized Injuries in Service and NonService Job Sectors
 
-
-#Percentage Hospitalized Injuries in Service and NonService Job Sectors
 ```{r}
-sum(NonService$Hospitalized)/nrow(NonService)
-sum(Service$Hospitalized)/nrow(Service)
+a=sum(NonService$Hospitalized)/nrow(NonService)
+b= sum(Service$Hospitalized)/nrow(Service)
+
+Sector = c( 'NonService', 'Service' )
+Percentage = c( a, b)
+
+HospitalizationPercentage = data.frame( Sector, Percentage)
+kable( HospitalizationPercentage)
 ```
 
-WRITE SOMETHING HERE
+There is quite a big difference in the hospitalizations recorded between the non-service sector and the service sector. This would require some domain knowledge in order to interpret, but it is the opposite of what you would expect. Non-service jobs are traditionally "more dangerous" and would be believed to cause more injuries. What may be happening is that only the major injuries of the Service fields are being recorded and most of those require trips to the hospital. 
 
-#Top 10 Nature Titles for Service 
+##Fact 2: Amputations
+```{r}
+c= sum(NonService$Amputation)/nrow(NonService)
+d= sum(Service$Amputation)/nrow(Service)
+
+Sector = c( 'NonService', 'Service' )
+Percentage = c( c, d)
+
+AmputationPercentage = data.frame( Sector, Percentage)
+kable( AmputationPercentage)
+```
+
+This proportion makes sense to us. The nonService sectors are generally more dangerous, so it seems likely that they have the higher amputation rate. The amputation rates seem very high. This is probably due to the fact that amputations are something that must be reported, so it makes sense that they tke up a large poriton of our data. However, this may be a data qualitiy issue if in reality our porportion on amputations is just being inflated because they must be reported. 
+
+
+##Fact 3: Top 10 Nature Titles for Service and Non Service  
 
 ```{r}
 Top10Service = Service %>%
   group_by(NatureTitle) %>%
   summarize( countSer = n()) %>%
   filter(countSer > 190) %>%
-  mutate(sector = "NonService")
+  mutate(sector = "NonService") %>%
+  mutate(NatureTitle = str_wrap(NatureTitle, width = 18)) 
 
-ggplot(Top10Service, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity")+coord_flip()
-```
+p1 = ggplot(Top10Service, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity", fill = "indianred4")+coord_flip()+ labs (y = "Count ", x = "Injury", title= "Service Sector")+ theme(axis.text.y = element_text(size=6)) 
 
-
-#Top 10 Nature Titles for NonService 
-
-```{r}
 Top10NonService = NonService %>%
   group_by(NatureTitle) %>%
   summarize( countNon = n()) %>%
   filter(countNon > 250) %>%
-  mutate(sector = "NonService")
+  mutate(sector = "NonService") %>%
+  mutate(NatureTitle = str_wrap(NatureTitle, width = 18)) 
 
-ggplot(Top10NonService, aes(reorder(NatureTitle, countNon), countNon))+geom_bar(stat= "identity")+coord_flip()
+p2 = ggplot(Top10NonService, aes(reorder(NatureTitle, countNon), countNon))+geom_bar(stat= "identity", fill = 'royalblue4')+ labs (y = "Count ", x = "Injury", title = "Non-Service Sector")+coord_flip()+ theme(axis.text.y = element_text(size=6))
+
+p1= ggplotly(p1)
+p2= ggplotly(p2)
+p = subplot( p1, p2, nrows = 1, margin = .08) %>%layout(title = "Service vs. Non Service Injuries")
+p
 ```
 
-The top 4 of the categories remain the same for both sectors. It is after that that we see the differences. 
+The top categories are different in the Service and NonService sector. In the NonService amputations are the most common injury, but in the service sector fractures are the most common. Some other stand out differences are that internal injuries are more common to NonService and Heat injuries and burns are less common in the Service sector. It will be interesting to dive a little deeper into the exact body parts of the injuries and see if there are any more differences.
 
-#Body Parts 
+##Fact 4: Body Parts 
 ```{r}
 Top10BodyPartService = Service %>%
   group_by(bodyPart) %>%
   summarize( count = n()) %>%
-  filter(count >500)
-
-ggplot(Top10BodyPartService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity")+coord_flip()
-```
+  filter(count >500) %>%
+  mutate(bodyPart = str_wrap(bodyPart, width = 18)) 
 
 
-```{r}
+p3= ggplot(Top10BodyPartService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity", fill ="indianred4" )+coord_flip()+labs (y = "Count ", x = "Body Part", title = "Service Sector")+coord_flip()+ theme(axis.text.y = element_text(size=6))
+
+
 Top10BodyPartNonService = NonService %>%
   group_by(bodyPart) %>%
   summarize( count = n()) %>%
-  filter(count >500)
+  filter(count >500) %>% 
+  mutate(bodyPart = str_wrap(bodyPart, width = 18)) 
 
-ggplot(Top10BodyPartNonService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity")+coord_flip()
+p4= ggplot(Top10BodyPartNonService, aes(reorder(bodyPart, count), count))+geom_bar(stat= "identity", fill = 'royalblue4' )+coord_flip()+labs (y = "Count ", x = "Body Part", title = "Non-Service Sector")+coord_flip()+ theme(axis.text.y = element_text(size=6))
+
+subplot( p3, p4, nrows = 1, margin = .08) %>%layout(title = "Service vs. Non Service Body Part")
+
+
 ```
 
-#Time Data
+Overwhelmingly fingers and finger tips are the most common body part injured. Most work involves your hands, so this falls in line with what one would expect. Hip injuries appear on Service, but not on NonService. This may be people in offices that are falling. Ankles and Brain also are high on the number of injuries for Service workers. Chest injuries are common in NonService injuries, but that does not show up in the top 10 for Service. There are some big differences in the body parts that are injured between the service and the non service sector. Hands, fingers, legs, and the chest are some of the most common for Non Service work. While for Service, fingers, Hips, Brain, and Ankles are some of the more common.
+
+
+##Fact 5: Time Data
  
  Lets look and see if there are any points from the last 3 years that have extremely high points of data. 
 ```{r}
 ServiceDate = Service %>%
   group_by(month,year) %>%
+  filter( year < 2018) %>% 
   summarize(numInjuries = n()) %>%
   mutate(FullDate = paste(month,year, sep = "/"))
 
 NonServiceDate = NonService %>%
   group_by(month,year) %>%
+  filter( year < 2018) %>% 
   summarize(numInjuries = n()) %>%
   mutate(FullDate = paste(month,year, sep = "/"))
 
-p=ggplot()+ geom_line(data=ServiceDate, aes(group=1,x= month,y= numInjuries), color = "blue")+ geom_line(data=NonServiceDate, aes(group=1,x= month,y= numInjuries), color = "red")+facet_wrap(~ year, ncol = 4)
+p=ggplot()+ geom_line(data=ServiceDate, aes(group=1,x= month,y= numInjuries), color = "indianred4")+ geom_line(data=NonServiceDate, aes(group=1,x= month,y= numInjuries), color = "royalblue4")+facet_wrap(~ year, ncol = 4)+ labs( title = "Number of Injuries over Time")
 ggplotly(p)
 ```
 
-Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the tredns seem to follow eachother. Which makes me think there is some outside force that is making them do more reports that month etc. We seem to see spikes in September and october. 
+Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the trends seem to follow each other. Which makes me think there is some outside force that is making them do more reports that month etc. We seem to see spikes in September and October. One inital thought is that those are some of the hotter months, so there could be a rise in heat stokes and dehydration. I would like to follow up and get more information on what happened in August of 2016 to cause such a huge spike. 
 
 
-#What happened in Auguest of 2016? 
+###BONUS: What happened in August of 2016? 
 
 
 ```{r}
+
 Top10ServiceAug2016 = Service %>%
   filter(month == 8, year == 2016) %>%
   group_by(NatureTitle) %>%
   summarize( countSer = n()) %>%
-  filter(countSer>10)
+  filter(countSer>9)%>%
+  mutate(NatureTitle = str_wrap(NatureTitle, width = 18)) 
   
 
-ggplot(Top10ServiceAug2016, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity")+coord_flip()
-```
+p6 = ggplot(Top10ServiceAug2016, aes(reorder(NatureTitle, countSer), countSer))+geom_bar(stat= "identity", fill ="indianred4" )+coord_flip()+labs (y = "Count ", x = "Body Part", title = "Service Sector")+coord_flip()+ theme(axis.text.y = element_text(size=6))
 
-```{r}
 Top10NonServiceAug2016 = NonService %>%
   filter(month == 8, year == 2016) %>%
   group_by(NatureTitle) %>%
   summarize( count = n()) %>%
-  filter(count >15)
+  filter(count >13)%>%
+  mutate(NatureTitle = str_wrap(NatureTitle, width = 18)) 
   
 
-ggplot(Top10NonServiceAug2016, aes(reorder(NatureTitle, count), count))+geom_bar(stat= "identity")+coord_flip()
-```
-We see a lot more heat and light injuries, I wonder if the temeperature was extremely high that year in september? 
+p7 = ggplot(Top10NonServiceAug2016, aes(reorder(NatureTitle, count), count))+geom_bar(stat= "identity" ,fill = "royalblue4")+coord_flip()+ labs( title = "Number of Injuries over Time")+ theme(axis.text.y = element_text(size=6))
 
-```{r}
-InjuryAug = Injury %>%
-  filter( month ==8, year == 2016)
-nrow(InjuryAug)/nrow(Injury)
+subplot( p6, p7, margin = .06) %>%layout(title = "Aug. 2016 Injury Types")
 ```
 
-#What is the top injury per state? 
 
-Do we have an even distribution of records across states? 
+We see a lot more heat and light injuries, I wonder if the temeperature was extremely high that year in september? This would be a situtation where outside weather data would provide more background.  
 
-```{r}
+
+##Fact 6: Are the most popular states for service injuries the same as the most popular states for non service injuires? 
+
+
+To accomplish this, I decided it would be easier to rank the states by number of records. So, if a state is ranked 1 that means that it has the most number of records, or injuires. If a state is ranked in the 50s that means there were hardly any injuries recorded. 
+
+
+```{r, warning=FALSE}
 ServiceStates = Service %>%
   group_by(State) %>%
   summarise(ServiceRecords = n())
@@ -235,16 +337,18 @@ NonServiceStates$NonServiceRank[order(-NonServiceStates$NonServiceRecords)]= 1:n
 
 StateRecords = left_join(ServiceStates, NonServiceStates)
 ```
-Top 20 states for service and non service are different. This is semi interesting. 
-
-
-A rank of 1 means that that state had the most records. 
 
 ```{r}
 StateRecords = StateRecords %>%
   select(State,ServiceRank, NonServiceRank)
+StateRecords = StateRecords[order(StateRecords$ServiceRank),]
 
-kable(StateRecords)
+StateRecordsDiff = StateRecords %>%
+  mutate( difference = abs(ServiceRank-NonServiceRank))
+
+kable(StateRecordsDiff)
+
+
 ```
 
 
