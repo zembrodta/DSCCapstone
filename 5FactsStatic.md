@@ -1,4 +1,4 @@
-5FactsStatic
+5 Facts Static
 ================
 
 -   [Data Set](#data-set)
@@ -207,7 +207,11 @@ Seperate the data sets into Service and NonService
 
 We will be using the following chart to separate our data sets. The numbers in the far-right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.
 
-![NAICS Codes.](~/Documents/GitHub/DSCCapstone/figures/NAICSCodes.png)
+``` r
+knitr::include_graphics('figures/NAICSCodes.PNG')
+```
+
+<img src="figures/NAICSCodes.PNG" width="100%" />
 
 ``` r
 Utilities = Injury %>% 
@@ -301,7 +305,7 @@ p2 = ggplot(Top10NonService, aes(reorder(NatureTitle, countNon), countNon))+geom
 plot_grid(p1, p2, ncol = 2, labels = "Frequency of Nature Title", vjust = .8, hjust = -2, label_size = 10)
 ```
 
-<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-13-1.png" width="100%" />
+<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-14-1.png" width="100%" />
 
 The top categories are different in the Service and NonService sector. In the NonService amputations are the most common injury, but in the service sector fractures are the most common. Some other stand out differences are that internal injuries are more common to NonService and Heat injuries and burns are less common in the Service sector. It will be interesting to dive a little deeper into the exact body parts of the injuries and see if there are any more differences.
 
@@ -330,7 +334,7 @@ p4= ggplot(Top10BodyPartNonService, aes(reorder(bodyPart, count), count))+geom_b
 plot_grid( p3, p4, labels = "Frequency of Body Part", vjust = .8, hjust = -2, label_size = 10) 
 ```
 
-<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-14-1.png" width="100%" />
+<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-15-1.png" width="100%" />
 
 Overwhelmingly fingers and finger tips are the most common body part injured. Most work involves your hands, so this falls in line with what one would expect. Hip injuries appear on Service, but not on NonService. This may be people in offices that are falling. Ankles and Brain also are high on the number of injuries for Service workers. Chest injuries are common in NonService injuries, but that does not show up in the top 10 for Service. There are some big differences in the body parts that are injured between the service and the non service sector. Hands, fingers, legs, and the chest are some of the most common for Non Service work. While for Service, fingers, Hips, Brain, and Ankles are some of the more common.
 
@@ -355,7 +359,7 @@ NonServiceDate = NonService %>%
 ggplot()+ geom_line(data=ServiceDate, aes(group=1,x= month,y= numInjuries), color = "indianred4")+ geom_line(data=NonServiceDate, aes(group=1,x= month,y= numInjuries), color = "royalblue4")+facet_wrap(~ year, ncol = 4)+ labs( title = "Number of Injuries Over Time")
 ```
 
-<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-15-1.png" width="100%" />
+<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-16-1.png" width="100%" />
 
 Something interesting about this is they follow a very similar pattern. That really isn't something I would expect. I would have thought that they would be a bit more random, however the trends seem to follow each other. This makes me think there is some outside force that is making them do more reports that month. We seem to see spikes in September and October. One inital thought is that those are some of the hotter months, so there could be a rise in heat stokes and dehydration. I would like to follow up and get more information on what happened in August of 2016 to cause such a huge spike.
 
@@ -385,7 +389,7 @@ p7 = ggplot(Top10NonServiceAug2016, aes(reorder(NatureTitle, count), count))+geo
 plot_grid( p6, p7, labels = "Nature Titles in Auguest 2016", vjust = .8, hjust = -2, label_size = 10)
 ```
 
-<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-16-1.png" width="100%" />
+<img src="5FactsStatic_files/figure-markdown_github/unnamed-chunk-17-1.png" width="100%" />
 
 We see a lot more heat and light injuries, I wonder if the temperature was extremely high that year in September? This would be a situation where outside weather data would provide more background.
 

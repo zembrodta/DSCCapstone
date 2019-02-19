@@ -1,17 +1,16 @@
 ---
-title: "5FactsStatic"
-author: "Allison Zembrodt"
+title: "5 Facts Static"
 output:
-  html_document:
-    number_sections: true
-    fig_caption: true
+  github_document:
+    #number_sections: true
+    #fig_caption: true
     toc: true
     fig_width: 9
     fig_height: 6
-    theme: cosmo
-    highlight: tango
-    code_folding: hide
-    self_contained: no 
+    #theme: cosmo
+    #highlight: tango
+    #code_folding: hide
+    #self_contained: no 
 ---
 
 ```{r setup, include=FALSE}
@@ -48,7 +47,6 @@ colnames(severeinjury)[colnames(severeinjury)=="Part of Body Title"] <- "bodyPar
 severeinjury$month = month(severeinjury$EventDate)
 severeinjury$year= year(severeinjury$EventDate)
 ```
-
 
 ##Cleaning
 Now that our dataset is imported, we would like to check to see if data has duplicate values of any nulls or duplicate values. 
@@ -144,9 +142,9 @@ Injury = severeWithdigits %>%
 ##Seperate the data sets into Service and NonService 
 
 We will be using the following chart to separate our data sets. The numbers in the far-right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.
-
-![NAICS Codes.](~/Documents/GitHub/DSCCapstone/figures/NAICSCodes.png)
-
+```{r}
+knitr::include_graphics('figures/NAICSCodes.PNG')
+```
 
 
 ```{r}
