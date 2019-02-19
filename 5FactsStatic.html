@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Allison Zembrodt" />
+
+
+<title>5FactsStatic</title>
+
+<script src="5FactsStatic_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="5FactsStatic_files/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="5FactsStatic_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="5FactsStatic_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="5FactsStatic_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="5FactsStatic_files/navigation-1.1/tabsets.js"></script>
+<script src="5FactsStatic_files/navigation-1.1/codefolding.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">5FactsStatic</h1>
+<h4 class="author"><em>Allison Zembrodt</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#data-set"><span class="toc-section-number">1</span> Data Set</a><ul>
+<li><a href="#packages"><span class="toc-section-number">1.1</span> Packages</a></li>
+<li><a href="#import-data"><span class="toc-section-number">1.2</span> Import Data</a></li>
+<li><a href="#cleaning"><span class="toc-section-number">1.3</span> Cleaning</a><ul>
+<li><a href="#missing-data"><span class="toc-section-number">1.3.1</span> Missing Data</a></li>
+<li><a href="#duplicate-data"><span class="toc-section-number">1.3.2</span> Duplicate Data</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#non-service-and-service-jobs"><span class="toc-section-number">2</span> Non Service and Service Jobs</a><ul>
+<li><a href="#naics-code-digit-checks"><span class="toc-section-number">2.1</span> Naics Code Digit Checks</a></li>
+<li><a href="#seperate-the-data-sets-into-service-and-nonservice"><span class="toc-section-number">2.2</span> Seperate the data sets into Service and NonService</a></li>
+</ul></li>
+<li><a href="#fun-facts"><span class="toc-section-number">3</span> Fun Facts</a><ul>
+<li><a href="#fact-1-percentage-hospitalized-injuries-in-service-and-nonservice-job-sectors"><span class="toc-section-number">3.1</span> Fact 1: Percentage Hospitalized Injuries in Service and NonService Job Sectors</a></li>
+<li><a href="#fact-2-amputations"><span class="toc-section-number">3.2</span> Fact 2: Amputations</a></li>
+<li><a href="#fact-3-top-10-nature-titles-for-service-and-non-service"><span class="toc-section-number">3.3</span> Fact 3: Top 10 Nature Titles for Service and Non Service</a></li>
+<li><a href="#fact-4-body-parts"><span class="toc-section-number">3.4</span> Fact 4: Body Parts</a></li>
+<li><a href="#fact-5-time-data"><span class="toc-section-number">3.5</span> Fact 5: Time Data</a><ul>
+<li><a href="#bonus-what-happened-in-august-of-2016"><span class="toc-section-number">3.5.1</span> BONUS: What happened in August of 2016?</a></li>
+</ul></li>
+<li><a href="#fact-6-are-the-most-popular-states-for-service-injuries-the-same-as-the-most-popular-states-for-non-service-injuires"><span class="toc-section-number">3.6</span> Fact 6: Are the most popular states for service injuries the same as the most popular states for non service injuires?</a></li>
+</ul></li>
+<li><a href="#onet-data-fact"><span class="toc-section-number">4</span> ONET Data Fact</a><ul>
+<li><a href="#import-data-set"><span class="toc-section-number">4.1</span> Import Data Set</a></li>
+<li><a href="#fact-7-which-occupations-have-the-highest-very-hot-or-cold-temperatures"><span class="toc-section-number">4.2</span> Fact 7: Which Occupations have the highest Very Hot or Cold Temperatures?</a></li>
+</ul></li>
+<li><a href="#conclusion"><span class="toc-section-number">5</span> Conclusion</a></li>
+</ul>
+</div>
+
+<div id="data-set" class="section level1">
+<h1><span class="header-section-number">1</span> Data Set</h1>
+<p>For the first section of our project, we are focusing on the OSHA data set and separating the jobs into service sector jobs and non-service sector jobs. All of my code and the data set are available directly on Alli’s github <a href="https://github.com/zembrodta/DSCCapstone" class="uri">https://github.com/zembrodta/DSCCapstone</a>.</p>
+<div id="packages" class="section level2">
+<h2><span class="header-section-number">1.1</span> Packages</h2>
+<p>I am using the tidyverse for basic cleaning. Lubridate for making handling dates easier. Plotly to make ggplot visualizations interactive. Knitr to make easy tables in Rmarkdown. Reshape2 to transform some of our data. These will all need to be installed in order for this code to be runnable.</p>
+</div>
+<div id="import-data" class="section level2">
+<h2><span class="header-section-number">1.2</span> Import Data</h2>
+<p>The following code imports our data set. Right off the bat we decided to remove the column Address2, and Inspection because they were mostly null. We also made sure to convert the eventdate column into a data format and make the ID column a character because there are some weird values which made it not numeric. I also added columns for month and year so we could do some analysis based on time of year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> severeinjury &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;~/Documents/GitHub/DSCCapstone/datasets/severeinjury.csv&quot;</span>, 
+    <span class="dt">col_types =</span> <span class="kw">cols</span>(<span class="dt">Address2 =</span> <span class="kw">col_skip</span>(), 
+    <span class="dt">EventDate =</span> <span class="kw">col_date</span>(<span class="dt">format =</span> <span class="st">&quot;%m/%d/%Y&quot;</span>), 
+    <span class="dt">ID =</span> <span class="kw">col_character</span>(), <span class="dt">Inspection =</span> <span class="kw">col_skip</span>()))
+<span class="kw">colnames</span>(severeinjury)[<span class="kw">colnames</span>(severeinjury)<span class="op">==</span><span class="st">&quot;Primary NAICS&quot;</span>] &lt;-<span class="st"> &quot;naics&quot;</span>
+<span class="kw">colnames</span>(severeinjury)[<span class="kw">colnames</span>(severeinjury)<span class="op">==</span><span class="st">&quot;Part of Body Title&quot;</span>] &lt;-<span class="st"> &quot;bodyPart&quot;</span>
+severeinjury<span class="op">$</span>month =<span class="st"> </span><span class="kw">month</span>(severeinjury<span class="op">$</span>EventDate)
+severeinjury<span class="op">$</span>year=<span class="st"> </span><span class="kw">year</span>(severeinjury<span class="op">$</span>EventDate)</code></pre></div>
+</div>
+<div id="cleaning" class="section level2">
+<h2><span class="header-section-number">1.3</span> Cleaning</h2>
+<p>Now that our dataset is imported, we would like to check to see if data has duplicate values of any nulls or duplicate values.</p>
+<div id="missing-data" class="section level3">
+<h3><span class="header-section-number">1.3.1</span> Missing Data</h3>
+<p>Let’s print out a complete summary of the number of missings in each column. The code below summarizes each column and counts the number of nulls.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Nulls=<span class="st"> </span>severeinjury<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise_all</span>(<span class="kw">funs</span>(<span class="kw">sum</span>(<span class="kw">is.na</span>(.))))
+Nulls=<span class="kw">melt</span>(Nulls)
+<span class="kw">kable</span>(Nulls)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ID</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">UPA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">EventDate</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Employer</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Address1</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">City</td>
+<td align="right">11</td>
+</tr>
+<tr class="odd">
+<td align="left">State</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Zip</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">Latitude</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">Longitude</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">naics</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Hospitalized</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Amputation</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Final Narrative</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Nature</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">NatureTitle</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Part of Body</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">bodyPart</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Event</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">EventTitle</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Source</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">SourceTitle</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Secondary Source</td>
+<td align="right">23509</td>
+</tr>
+<tr class="even">
+<td align="left">Secondary Source Title</td>
+<td align="right">23509</td>
+</tr>
+<tr class="odd">
+<td align="left">month</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">year</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>For the most part our data looks pretty good. There are two columns that are about 60% null, but those are about secondary sources. It would make sense for secondary source to be mainly null, because sometimes there are not always two sources. For right now, I am going to leave those columns because we aren’t really using them.</p>
+<p>What I am more concerned about is the 3 nulls in the NAISC code column. Since we are going to be breaking up the records into two different files, the service sector and the non-service sector, we will need to get rid of those. I will use the function, drop_na in the tidyverse to remove these values. I am also going to get rid of the 2 null values in the amputation column because we may use that for some analysis and it will mess up any counting and averaging.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">severeinjury =<span class="st"> </span>severeinjury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">drop_na</span>(naics, Amputation)</code></pre></div>
+</div>
+<div id="duplicate-data" class="section level3">
+<h3><span class="header-section-number">1.3.2</span> Duplicate Data</h3>
+<p>Since the id column should be unique, I am going to check to make sure the number of rows in the severeInjury data equals the number of unique Ids.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(<span class="kw">unique</span>(severeinjury<span class="op">$</span>ID))</code></pre></div>
+<pre><code>## [1] 32117</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(severeinjury)</code></pre></div>
+<pre><code>## [1] 32122</code></pre>
+<p>There are 5 id values that are the same. So, ID is either not unique or we have some duplicates. Let’s investigate further.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NotUniqueIDs =<span class="st"> </span>severeinjury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>( <span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( count <span class="op">&gt;</span><span class="dv">1</span>)
+
+SameIDs =<span class="st"> </span>severeinjury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( ID <span class="op">==</span><span class="st"> &quot;2015010015&quot;</span> <span class="op">|</span><span class="st"> </span>ID <span class="op">==</span><span class="st"> &quot;2015010016&quot;</span> <span class="op">|</span><span class="st"> </span>ID <span class="op">==</span><span class="st"> &quot;2015010018&quot;</span> <span class="op">|</span>ID <span class="op">==</span><span class="st">&quot;2015010020&quot;</span> <span class="op">|</span><span class="st"> </span>ID <span class="op">==</span><span class="st">&#39;2015010021&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span> (ID, EventDate, Employer, City, State, bodyPart) 
+SameIDs =<span class="st"> </span>SameIDs[<span class="kw">order</span>(SameIDs<span class="op">$</span>ID),]
+<span class="kw">kable</span>(SameIDs)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="left">EventDate</th>
+<th align="left">Employer</th>
+<th align="left">City</th>
+<th align="left">State</th>
+<th align="left">bodyPart</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2015010015</td>
+<td align="left">2015-01-01</td>
+<td align="left">FCI Otisville Federal Correctional Institution</td>
+<td align="left">OTISVILLE</td>
+<td align="left">NEW YORK</td>
+<td align="left">Lower leg(s)</td>
+</tr>
+<tr class="even">
+<td align="left">2015010015</td>
+<td align="left">2015-01-19</td>
+<td align="left">Lochridge Priest, Inc.</td>
+<td align="left">WACO</td>
+<td align="left">TEXAS</td>
+<td align="left">Thigh(s)</td>
+</tr>
+<tr class="odd">
+<td align="left">2015010016</td>
+<td align="left">2015-01-01</td>
+<td align="left">Kalahari Manufacturing LLC</td>
+<td align="left">LAKE DELTON</td>
+<td align="left">WISCONSIN</td>
+<td align="left">Leg(s), n.e.c.</td>
+</tr>
+<tr class="even">
+<td align="left">2015010016</td>
+<td align="left">2015-01-26</td>
+<td align="left">HDA Motors, Inc. dba Continental Honda</td>
+<td align="left">COUNTRYSIDE</td>
+<td align="left">ILLINOIS</td>
+<td align="left">Brain</td>
+</tr>
+<tr class="odd">
+<td align="left">2015010018</td>
+<td align="left">2015-01-01</td>
+<td align="left">Schneider National Bulk Carrier</td>
+<td align="left">CORAOPOLIS</td>
+<td align="left">PENNSYLVANIA</td>
+<td align="left">Nonclassifiable</td>
+</tr>
+<tr class="even">
+<td align="left">2015010018</td>
+<td align="left">2015-01-28</td>
+<td align="left">RCS SYSTEMS, INC.</td>
+<td align="left">MILWAUKEE</td>
+<td align="left">WISCONSIN</td>
+<td align="left">Hand(s), unspecified</td>
+</tr>
+<tr class="odd">
+<td align="left">2015010020</td>
+<td align="left">2015-01-01</td>
+<td align="left">North American Pipe Corporation</td>
+<td align="left">JANESVILLE</td>
+<td align="left">WISCONSIN</td>
+<td align="left">Finger(s), fingernail(s), n.e.c.</td>
+</tr>
+<tr class="even">
+<td align="left">2015010020</td>
+<td align="left">2015-01-30</td>
+<td align="left">Schiavone Construction Co, Inc</td>
+<td align="left">JERSEY CITY</td>
+<td align="left">NEW JERSEY</td>
+<td align="left">Fingertip(s)</td>
+</tr>
+<tr class="odd">
+<td align="left">2015010021</td>
+<td align="left">2015-01-01</td>
+<td align="left">The Home Depot, Inc.</td>
+<td align="left">CAPE CORAL</td>
+<td align="left">FLORIDA</td>
+<td align="left">Elbow(s)</td>
+</tr>
+<tr class="even">
+<td align="left">2015010021</td>
+<td align="left">2015-01-30</td>
+<td align="left">Schiavone Construction Co. LLC</td>
+<td align="left">JERSEY CITY</td>
+<td align="left">NEW JERSEY</td>
+<td align="left">Fingertip(s)</td>
+</tr>
+</tbody>
+</table>
+<p>So, even though they have the same ID these are unique records. This is kind of concerning because it means that ID is not unique. I am going to do a check that NatureTitle, Day and Employer are all unique. To me, that would be a unique combination.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NatureDayEmployer =<span class="st"> </span>severeinjury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(NatureTitle, EventDate, Employer)
+
+<span class="kw">nrow</span>(NatureDayEmployer) <span class="op">==</span><span class="st"> </span><span class="kw">nrow</span>(severeinjury)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>They are the same, so I am going to assume that we have unique values. I would like to check with the CDC/ NIOSH representatives to ensure that this was a correct assumption and make sure they are aware that ID is not completely unique.</p>
+</div>
+</div>
+</div>
+<div id="non-service-and-service-jobs" class="section level1">
+<h1><span class="header-section-number">2</span> Non Service and Service Jobs</h1>
+<p>One of the big goals of our project is to see if there are any differences between service sector jobs and non-service sector jobs. We will be looking at the different types of injuries common in the two sectors, the difference in body parts, and the time of year the injuries occur. Before we begin that analysis, I we will need to separate the data set. We will be doing this by using NAICS codes.</p>
+<div id="naics-code-digit-checks" class="section level2">
+<h2><span class="header-section-number">2.1</span> Naics Code Digit Checks</h2>
+<p>I want to make sure that all the records have a full 6 digit naics code before I remove them. I saw something suspicious when I was looking through the data manually and I want to double check that everything has the correct number of digits based on the chart we are using.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">severeWithdigits =<span class="st"> </span>severeinjury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NumberOfNaics =</span> <span class="kw">nchar</span>(naics))
+
+<span class="kw">max</span>(severeWithdigits<span class="op">$</span>NumberOfNaics)</code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">min</span>(severeWithdigits<span class="op">$</span>NumberOfNaics)</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<p>The max number of digits is 6 which is what we expected, but the minimum is 2. This is concerning, because we do not know how to interpret the 2 digit codes. Let’s check how many records have less than 6 to see if it is significant enough to worry about them. The code below checks to see how many are less than 6.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(severeWithdigits<span class="op">$</span>NumberOfNaics <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 131</code></pre>
+<p>There are 131 records that have naics codes that either need to be handled separately or just thrown out, for now I am going to remove them by putting them in a different data set in case we want to investigate them further later.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">NotRealNaisc =<span class="st"> </span>severeWithdigits <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( NumberOfNaics <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>)
+
+Injury =<span class="st"> </span>severeWithdigits <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( NumberOfNaics <span class="op">==</span><span class="st"> </span><span class="dv">6</span>)</code></pre></div>
+</div>
+<div id="seperate-the-data-sets-into-service-and-nonservice" class="section level2">
+<h2><span class="header-section-number">2.2</span> Seperate the data sets into Service and NonService</h2>
+<p>We will be using the following chart to separate our data sets. The numbers in the far-right column correspond to the first two digits of our NAICS codes. Utilities made this slightly tricky because it has a NAICS code of 22 which falls in the middle of the NonService producing numbers, but with a little work around our datasets were separated.</p>
+<div class="figure">
+<img src="figures/NAICSCodes.png" alt="NAICS Codes." />
+<p class="caption">NAICS Codes.</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Utilities =<span class="st"> </span>Injury <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(naics <span class="op">&gt;=</span><span class="st"> </span><span class="dv">220000</span> <span class="op">&amp;</span><span class="st"> </span>naics <span class="op">&lt;</span><span class="dv">230000</span>)
+  
+Service =<span class="st"> </span>Injury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( naics <span class="op">&gt;=</span><span class="st"> </span><span class="dv">400000</span>)
+
+Service =<span class="st"> </span><span class="kw">rbind</span>(Service, Utilities)
+
+NonServiceTop =<span class="st"> </span>Injury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(naics <span class="op">&lt;</span><span class="st"> </span><span class="dv">400000</span> <span class="op">&amp;</span><span class="st"> </span>naics <span class="op">&gt;=</span><span class="st"> </span><span class="dv">230000</span>) 
+
+NonServiceBottom =<span class="st"> </span>Injury <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(naics <span class="op">&lt;</span><span class="st"> </span><span class="dv">220000</span>)
+
+NonService =<span class="st"> </span><span class="kw">rbind</span>(NonServiceTop, NonServiceBottom)</code></pre></div>
+</div>
+</div>
+<div id="fun-facts" class="section level1">
+<h1><span class="header-section-number">3</span> Fun Facts</h1>
+<p>After all of our cleaning, it is finally time to start looking at interesting facts in our data.</p>
+<div id="fact-1-percentage-hospitalized-injuries-in-service-and-nonservice-job-sectors" class="section level2">
+<h2><span class="header-section-number">3.1</span> Fact 1: Percentage Hospitalized Injuries in Service and NonService Job Sectors</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a=<span class="kw">sum</span>(NonService<span class="op">$</span>Hospitalized)<span class="op">/</span><span class="kw">nrow</span>(NonService)
+b=<span class="st"> </span><span class="kw">sum</span>(Service<span class="op">$</span>Hospitalized)<span class="op">/</span><span class="kw">nrow</span>(Service)
+
+Sector =<span class="st"> </span><span class="kw">c</span>( <span class="st">&#39;NonService&#39;</span>, <span class="st">&#39;Service&#39;</span> )
+Percentage =<span class="st"> </span><span class="kw">c</span>( a, b)
+
+HospitalizationPercentage =<span class="st"> </span><span class="kw">data.frame</span>( Sector, Percentage)
+<span class="kw">kable</span>( HospitalizationPercentage)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sector</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NonService</td>
+<td align="right">0.7574010</td>
+</tr>
+<tr class="even">
+<td align="left">Service</td>
+<td align="right">0.8735039</td>
+</tr>
+</tbody>
+</table>
+<p>There is quite a big difference in the hospitalizations recorded between the non-service sector and the service sector. This would require some domain knowledge in order to interpret, but it is the opposite of what you would expect. Non-service jobs are traditionally “more dangerous” and would be believed to cause more injuries. What may be happening is that only the major injuries of the Service fields are being recorded and most of those require trips to the hospital.</p>
+</div>
+<div id="fact-2-amputations" class="section level2">
+<h2><span class="header-section-number">3.2</span> Fact 2: Amputations</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c=<span class="st"> </span><span class="kw">sum</span>(NonService<span class="op">$</span>Amputation)<span class="op">/</span><span class="kw">nrow</span>(NonService)
+d=<span class="st"> </span><span class="kw">sum</span>(Service<span class="op">$</span>Amputation)<span class="op">/</span><span class="kw">nrow</span>(Service)
+
+Sector =<span class="st"> </span><span class="kw">c</span>( <span class="st">&#39;NonService&#39;</span>, <span class="st">&#39;Service&#39;</span> )
+Percentage =<span class="st"> </span><span class="kw">c</span>( c, d)
+
+AmputationPercentage =<span class="st"> </span><span class="kw">data.frame</span>( Sector, Percentage)
+<span class="kw">kable</span>( AmputationPercentage)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Sector</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NonService</td>
+<td align="right">0.3395609</td>
+</tr>
+<tr class="even">
+<td align="left">Service</td>
+<td align="right">0.1804630</td>
+</tr>
+</tbody>
+</table>
+<p>This proportion makes sense to us. The nonService sectors are generally more dangerous, so it seems likely that they have the higher amputation rate. The amputation rates seem very high. This is probably due to the fact that amputations are something that must be reported, so it makes sense that they take up a large portion of our data. However, this may be a data quality issue if in reality our proportion on amputations is just being inflated because they must be reported.</p>
+</div>
+<div id="fact-3-top-10-nature-titles-for-service-and-non-service" class="section level2">
+<h2><span class="header-section-number">3.3</span> Fact 3: Top 10 Nature Titles for Service and Non Service</h2>
+<p>Note: Throughout the document all NonService sector jobs will be represented in blue and Service sector jobs will be in red.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Top10Service =<span class="st"> </span>Service <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(NatureTitle) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">countSer =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(countSer <span class="op">&gt;</span><span class="st"> </span><span class="dv">190</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sector =</span> <span class="st">&quot;NonService&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NatureTitle =</span> <span class="kw">str_wrap</span>(NatureTitle, <span class="dt">width =</span> <span class="dv">18</span>)) 
+
+p1 =<span class="st"> </span><span class="kw">ggplot</span>(Top10Service, <span class="kw">aes</span>(<span class="kw">reorder</span>(NatureTitle, countSer), countSer))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;indianred4&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">labs</span> (<span class="dt">y =</span> <span class="st">&quot;Count &quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Injury&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;Service Sector&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>)) 
+Top10NonService =<span class="st"> </span>NonService <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(NatureTitle) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">countNon =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(countNon <span class="op">&gt;</span><span class="st"> </span><span class="dv">250</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sector =</span> <span class="st">&quot;NonService&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NatureTitle =</span> <span class="kw">str_wrap</span>(NatureTitle, <span class="dt">width =</span> <span class="dv">18</span>)) 
+
+p2 =<span class="st"> </span><span class="kw">ggplot</span>(Top10NonService, <span class="kw">aes</span>(<span class="kw">reorder</span>(NatureTitle, countNon), countNon))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span> <span class="st">&#39;royalblue4&#39;</span>)<span class="op">+</span><span class="st"> </span><span class="kw">labs</span> (<span class="dt">y =</span> <span class="st">&quot;Count &quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Injury&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Non-Service Sector&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>))
+
+
+<span class="kw">plot_grid</span>(p1, p2, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">labels =</span> <span class="st">&quot;Frequency of Nature Title&quot;</span>, <span class="dt">vjust =</span> .<span class="dv">8</span>, <span class="dt">hjust =</span> <span class="op">-</span><span class="dv">2</span>, <span class="dt">label_size =</span> <span class="dv">10</span>)</code></pre></div>
+<p><img src="5FactsStatic_files/figure-html/unnamed-chunk-13-1.png" width="100%" /></p>
+<p>The top categories are different in the Service and NonService sector. In the NonService amputations are the most common injury, but in the service sector fractures are the most common. Some other stand out differences are that internal injuries are more common to NonService and Heat injuries and burns are less common in the Service sector. It will be interesting to dive a little deeper into the exact body parts of the injuries and see if there are any more differences.</p>
+</div>
+<div id="fact-4-body-parts" class="section level2">
+<h2><span class="header-section-number">3.4</span> Fact 4: Body Parts</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Top10BodyPartService =<span class="st"> </span>Service <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(bodyPart) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(count <span class="op">&gt;</span><span class="dv">500</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bodyPart =</span> <span class="kw">str_wrap</span>(bodyPart, <span class="dt">width =</span> <span class="dv">18</span>)) 
+
+
+p3=<span class="st"> </span><span class="kw">ggplot</span>(Top10BodyPartService, <span class="kw">aes</span>(<span class="kw">reorder</span>(bodyPart, count), count))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span><span class="st">&quot;indianred4&quot;</span> )<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="kw">labs</span> (<span class="dt">y =</span> <span class="st">&quot;Count &quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Body Part&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Service Sector&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>))
+
+
+Top10BodyPartNonService =<span class="st"> </span>NonService <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(bodyPart) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(count <span class="op">&gt;</span><span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bodyPart =</span> <span class="kw">str_wrap</span>(bodyPart, <span class="dt">width =</span> <span class="dv">18</span>)) 
+
+p4=<span class="st"> </span><span class="kw">ggplot</span>(Top10BodyPartNonService, <span class="kw">aes</span>(<span class="kw">reorder</span>(bodyPart, count), count))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span> <span class="st">&#39;royalblue4&#39;</span> )<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="kw">labs</span> (<span class="dt">y =</span> <span class="st">&quot;Count &quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Body Part&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Non-Service Sector&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>))
+
+<span class="kw">plot_grid</span>( p3, p4, <span class="dt">labels =</span> <span class="st">&quot;Frequency of Body Part&quot;</span>, <span class="dt">vjust =</span> .<span class="dv">8</span>, <span class="dt">hjust =</span> <span class="op">-</span><span class="dv">2</span>, <span class="dt">label_size =</span> <span class="dv">10</span>) </code></pre></div>
+<p><img src="5FactsStatic_files/figure-html/unnamed-chunk-14-1.png" width="100%" /></p>
+<p>Overwhelmingly fingers and finger tips are the most common body part injured. Most work involves your hands, so this falls in line with what one would expect. Hip injuries appear on Service, but not on NonService. This may be people in offices that are falling. Ankles and Brain also are high on the number of injuries for Service workers. Chest injuries are common in NonService injuries, but that does not show up in the top 10 for Service. There are some big differences in the body parts that are injured between the service and the non service sector. Hands, fingers, legs, and the chest are some of the most common for Non Service work. While for Service, fingers, Hips, Brain, and Ankles are some of the more common.</p>
+</div>
+<div id="fact-5-time-data" class="section level2">
+<h2><span class="header-section-number">3.5</span> Fact 5: Time Data</h2>
+<p>Lets look and see if there are any points from the last 3 years that have extremely high points of data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ServiceDate =<span class="st"> </span>Service <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(month,year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">numInjuries =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">FullDate =</span> <span class="kw">paste</span>(month,year, <span class="dt">sep =</span> <span class="st">&quot;/&quot;</span>))
+
+NonServiceDate =<span class="st"> </span>NonService <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(month,year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2018</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">numInjuries =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">FullDate =</span> <span class="kw">paste</span>(month,year, <span class="dt">sep =</span> <span class="st">&quot;/&quot;</span>))
+
+<span class="kw">ggplot</span>()<span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">data=</span>ServiceDate, <span class="kw">aes</span>(<span class="dt">group=</span><span class="dv">1</span>,<span class="dt">x=</span> month,<span class="dt">y=</span> numInjuries), <span class="dt">color =</span> <span class="st">&quot;indianred4&quot;</span>)<span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">data=</span>NonServiceDate, <span class="kw">aes</span>(<span class="dt">group=</span><span class="dv">1</span>,<span class="dt">x=</span> month,<span class="dt">y=</span> numInjuries), <span class="dt">color =</span> <span class="st">&quot;royalblue4&quot;</span>)<span class="op">+</span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>year, <span class="dt">ncol =</span> <span class="dv">4</span>)<span class="op">+</span><span class="st"> </span><span class="kw">labs</span>( <span class="dt">title =</span> <span class="st">&quot;Number of Injuries Over Time&quot;</span>)</code></pre></div>
+<p><img src="5FactsStatic_files/figure-html/unnamed-chunk-15-1.png" width="100%" /></p>
+<p>Something interesting about this is they follow a very similar pattern. That really isn’t something I would expect. I would have thought that they would be a bit more random, however the trends seem to follow each other. This makes me think there is some outside force that is making them do more reports that month. We seem to see spikes in September and October. One inital thought is that those are some of the hotter months, so there could be a rise in heat stokes and dehydration. I would like to follow up and get more information on what happened in August of 2016 to cause such a huge spike.</p>
+<div id="bonus-what-happened-in-august-of-2016" class="section level3">
+<h3><span class="header-section-number">3.5.1</span> BONUS: What happened in August of 2016?</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Top10ServiceAug2016 =<span class="st"> </span>Service <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(month <span class="op">==</span><span class="st"> </span><span class="dv">8</span>, year <span class="op">==</span><span class="st"> </span><span class="dv">2016</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(NatureTitle) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">countSer =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(countSer<span class="op">&gt;</span><span class="dv">9</span>)<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NatureTitle =</span> <span class="kw">str_wrap</span>(NatureTitle, <span class="dt">width =</span> <span class="dv">18</span>)) 
+  
+
+p6 =<span class="st"> </span><span class="kw">ggplot</span>(Top10ServiceAug2016, <span class="kw">aes</span>(<span class="kw">reorder</span>(NatureTitle, countSer), countSer))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span><span class="st">&quot;indianred4&quot;</span> )<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="kw">labs</span> (<span class="dt">y =</span> <span class="st">&quot;Count &quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Body Part&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Service Sector&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>))
+
+Top10NonServiceAug2016 =<span class="st"> </span>NonService <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(month <span class="op">==</span><span class="st"> </span><span class="dv">8</span>, year <span class="op">==</span><span class="st"> </span><span class="dv">2016</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(NatureTitle) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>( <span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(count <span class="op">&gt;</span><span class="dv">13</span>)<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">NatureTitle =</span> <span class="kw">str_wrap</span>(NatureTitle, <span class="dt">width =</span> <span class="dv">18</span>)) 
+  
+
+p7 =<span class="st"> </span><span class="kw">ggplot</span>(Top10NonServiceAug2016, <span class="kw">aes</span>(<span class="kw">reorder</span>(NatureTitle, count), count))<span class="op">+</span><span class="kw">geom_bar</span>(<span class="dt">stat=</span> <span class="st">&quot;identity&quot;</span> ,<span class="dt">fill =</span> <span class="st">&quot;royalblue4&quot;</span>)<span class="op">+</span><span class="kw">coord_flip</span>()<span class="op">+</span><span class="st"> </span><span class="kw">labs</span>( <span class="dt">title =</span> <span class="st">&#39;Non Service Sector&#39;</span>)<span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">6</span>))
+
+<span class="kw">plot_grid</span>( p6, p7, <span class="dt">labels =</span> <span class="st">&quot;Nature Titles in Auguest 2016&quot;</span>, <span class="dt">vjust =</span> .<span class="dv">8</span>, <span class="dt">hjust =</span> <span class="op">-</span><span class="dv">2</span>, <span class="dt">label_size =</span> <span class="dv">10</span>)</code></pre></div>
+<p><img src="5FactsStatic_files/figure-html/unnamed-chunk-16-1.png" width="100%" /></p>
+<p>We see a lot more heat and light injuries, I wonder if the temperature was extremely high that year in September? This would be a situation where outside weather data would provide more background.</p>
+</div>
+</div>
+<div id="fact-6-are-the-most-popular-states-for-service-injuries-the-same-as-the-most-popular-states-for-non-service-injuires" class="section level2">
+<h2><span class="header-section-number">3.6</span> Fact 6: Are the most popular states for service injuries the same as the most popular states for non service injuires?</h2>
+<p>To accomplish this, I decided it would be easier to rank the states by number of records. So, if a state is ranked 1 that means that state has the greatest number of records, or injuries. If a state is ranked in the 50s that means, there were hardly any injuries recorded. Surprisingly, there are some states like New Jersey that rank very high in amount of Service injuries (8), but it is ranked in the middle for NonService (18). The differences between where the states fall in the non service and service states probably has something to do with the job markets in those areas.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ServiceStates =<span class="st"> </span>Service <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(State) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">ServiceRecords =</span> <span class="kw">n</span>())
+NonServiceStates =<span class="st"> </span>NonService <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(State)<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">NonServiceRecords =</span> <span class="kw">n</span>())
+StatesRecords =<span class="st"> </span><span class="kw">left_join</span>(ServiceStates, NonServiceStates)
+<span class="co">#View(StatesRecords)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ServiceStates<span class="op">$</span>ServiceRank=<span class="st"> </span><span class="ot">NA</span>
+ServiceStates<span class="op">$</span>ServiceRank[<span class="kw">order</span>(<span class="op">-</span>ServiceStates<span class="op">$</span>ServiceRecords)]=<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(ServiceStates)
+
+NonServiceStates<span class="op">$</span>NonServiceRank=<span class="st"> </span><span class="ot">NA</span>
+NonServiceStates<span class="op">$</span>NonServiceRank[<span class="kw">order</span>(<span class="op">-</span>NonServiceStates<span class="op">$</span>NonServiceRecords)]=<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(NonServiceStates)
+
+
+StateRecords =<span class="st"> </span><span class="kw">left_join</span>(ServiceStates, NonServiceStates)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">StateRecords =<span class="st"> </span>StateRecords <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(State,ServiceRank, NonServiceRank)
+StateRecords =<span class="st"> </span>StateRecords[<span class="kw">order</span>(StateRecords<span class="op">$</span>ServiceRank),]
+
+StateRecordsDiff =<span class="st"> </span>StateRecords <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">difference =</span> <span class="kw">abs</span>(ServiceRank<span class="op">-</span>NonServiceRank))
+
+<span class="kw">kable</span>(StateRecordsDiff)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">State</th>
+<th align="right">ServiceRank</th>
+<th align="right">NonServiceRank</th>
+<th align="right">difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">TEXAS</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">FLORIDA</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">PENNSYLVANIA</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">OHIO</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ILLINOIS</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">NEW YORK</td>
+<td align="right">6</td>
+<td align="right">8</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">GEORGIA</td>
+<td align="right">7</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NEW JERSEY</td>
+<td align="right">8</td>
+<td align="right">18</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">COLORADO</td>
+<td align="right">9</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">MISSOURI</td>
+<td align="right">10</td>
+<td align="right">11</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">MASSACHUSETTS</td>
+<td align="right">11</td>
+<td align="right">17</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">WISCONSIN</td>
+<td align="right">12</td>
+<td align="right">7</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">LOUISIANA</td>
+<td align="right">13</td>
+<td align="right">13</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">ALABAMA</td>
+<td align="right">14</td>
+<td align="right">9</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="left">ARKANSAS</td>
+<td align="right">15</td>
+<td align="right">12</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">KANSAS</td>
+<td align="right">16</td>
+<td align="right">16</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">OKLAHOMA</td>
+<td align="right">17</td>
+<td align="right">14</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">NEBRASKA</td>
+<td align="right">18</td>
+<td align="right">19</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">MISSISSIPPI</td>
+<td align="right">19</td>
+<td align="right">15</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">CONNECTICUT</td>
+<td align="right">20</td>
+<td align="right">23</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">CALIFORNIA</td>
+<td align="right">21</td>
+<td align="right">32</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">MAINE</td>
+<td align="right">22</td>
+<td align="right">25</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">WEST VIRGINIA</td>
+<td align="right">23</td>
+<td align="right">22</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">IDAHO</td>
+<td align="right">24</td>
+<td align="right">21</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">NORTH DAKOTA</td>
+<td align="right">25</td>
+<td align="right">20</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">NEW HAMPSHIRE</td>
+<td align="right">26</td>
+<td align="right">27</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">MONTANA</td>
+<td align="right">27</td>
+<td align="right">28</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">SOUTH DAKOTA</td>
+<td align="right">28</td>
+<td align="right">24</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">DISTRICT OF COLUMBIA</td>
+<td align="right">29</td>
+<td align="right">31</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">VIRGINIA</td>
+<td align="right">30</td>
+<td align="right">29</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">RHODE ISLAND</td>
+<td align="right">31</td>
+<td align="right">30</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">DELAWARE</td>
+<td align="right">32</td>
+<td align="right">26</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">WASHINGTON</td>
+<td align="right">33</td>
+<td align="right">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">TENNESSEE</td>
+<td align="right">34</td>
+<td align="right">40</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIZONA</td>
+<td align="right">35</td>
+<td align="right">37</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">MARYLAND</td>
+<td align="right">36</td>
+<td align="right">35</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">MICHIGAN</td>
+<td align="right">37</td>
+<td align="right">51</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="left">NORTH CAROLINA</td>
+<td align="right">38</td>
+<td align="right">36</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">NEW MEXICO</td>
+<td align="right">39</td>
+<td align="right">46</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">OREGON</td>
+<td align="right">40</td>
+<td align="right">38</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">UTAH</td>
+<td align="right">41</td>
+<td align="right">50</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">SOUTH CAROLINA</td>
+<td align="right">42</td>
+<td align="right">39</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">MINNESOTA</td>
+<td align="right">43</td>
+<td align="right">52</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">HAWAII</td>
+<td align="right">44</td>
+<td align="right">41</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">INDIANA</td>
+<td align="right">45</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">KENTUCKY</td>
+<td align="right">46</td>
+<td align="right">34</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="left">IOWA</td>
+<td align="right">47</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">WYOMING</td>
+<td align="right">48</td>
+<td align="right">45</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">ALASKA</td>
+<td align="right">49</td>
+<td align="right">43</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">GUAM</td>
+<td align="right">50</td>
+<td align="right">42</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">NEVADA</td>
+<td align="right">51</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">VERMONT</td>
+<td align="right">52</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">NORTHERN MARIANA ISLANDS</td>
+<td align="right">53</td>
+<td align="right">48</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">AMERICAN SAMOA</td>
+<td align="right">54</td>
+<td align="right">44</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">PUERTO RICO</td>
+<td align="right">55</td>
+<td align="right">49</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="onet-data-fact" class="section level1">
+<h1><span class="header-section-number">4</span> ONET Data Fact</h1>
+<p>We have barely touched the surface of this data set. It took us a long time to realize what was the best way to read/interpret it. We decided to only use the columns for title, SOC number, Element ID, Element Name, and Data Value. These are the values we know how to interpret right now, so these are what we will be using. For a basic fact, we wanted to see the top 5 jobs that involve working in extreme temperatures.</p>
+<div id="import-data-set" class="section level2">
+<h2><span class="header-section-number">4.1</span> Import Data Set</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">WorkContext &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="st">&quot;~/Downloads/Work Context.xlsx&quot;</span>)
+
+WorkContext =<span class="st"> </span>WorkContext <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( WorkContext<span class="op">$</span><span class="st">`</span><span class="dt">Scale Name</span><span class="st">`</span> <span class="op">==</span><span class="st"> &quot;Context&quot;</span>)</code></pre></div>
+</div>
+<div id="fact-7-which-occupations-have-the-highest-very-hot-or-cold-temperatures" class="section level2">
+<h2><span class="header-section-number">4.2</span> Fact 7: Which Occupations have the highest Very Hot or Cold Temperatures?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HotCold =<span class="st"> </span>WorkContext <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>( <span class="st">`</span><span class="dt">Element Name</span><span class="st">`</span> <span class="op">==</span><span class="st"> &quot;Very Hot or Cold Temperatures&quot;</span>)
+
+Top5HotCold =<span class="st"> </span>HotCold <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="st">`</span><span class="dt">Data Value</span><span class="st">`</span> <span class="op">&gt;</span><span class="fl">4.73</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>( Title, <span class="st">`</span><span class="dt">Element Name</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Data Value</span><span class="st">`</span>)
+
+Top5HotCold =<span class="st"> </span>Top5HotCold[<span class="kw">order</span>(Top5HotCold<span class="op">$</span><span class="st">`</span><span class="dt">Data Value</span><span class="st">`</span>),]
+<span class="kw">kable</span>(Top5HotCold)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Title</th>
+<th align="left">Element Name</th>
+<th align="right">Data Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Landscaping and Groundskeeping Workers</td>
+<td align="left">Very Hot or Cold Temperatures</td>
+<td align="right">4.74</td>
+</tr>
+<tr class="even">
+<td align="left">Refractory Materials Repairers, Except Brickmasons</td>
+<td align="left">Very Hot or Cold Temperatures</td>
+<td align="right">4.74</td>
+</tr>
+<tr class="odd">
+<td align="left">Metal-Refining Furnace Operators and Tenders</td>
+<td align="left">Very Hot or Cold Temperatures</td>
+<td align="right">4.82</td>
+</tr>
+<tr class="even">
+<td align="left">Sailors and Marine Oilers</td>
+<td align="left">Very Hot or Cold Temperatures</td>
+<td align="right">4.93</td>
+</tr>
+<tr class="odd">
+<td align="left">Pourers and Casters, Metal</td>
+<td align="left">Very Hot or Cold Temperatures</td>
+<td align="right">4.98</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1><span class="header-section-number">5</span> Conclusion</h1>
+<p>Splitting the injuries data set has led us to some very interesting conclusions. There is clearly a difference in the amount of injuries, nature of injuries, and parts of the body that they affect. Once we are able to dig deeper into our data, we will be able to come up with even more visualizations to showcase the differences between the service and non-service sector jobs and hopefully come up with our interactive dashboard to allow the user to narrow down into specific jobs they are interested in.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
