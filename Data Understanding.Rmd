@@ -1,0 +1,236 @@
+---
+title: "Understanding Data"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+    fig_caption: true
+    toc: true
+    fig_width: 9
+    fig_height: 6
+    theme: cosmo
+    highlight: tango
+    code_folding: hide
+    self_contained: no 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,  warning=FALSE, message = FALSE)
+knitr::opts_chunk$set(out.width="100%", fig.height = 4.5, split=FALSE, fig.align = 'default')
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(knitr)
+library(reshape2)
+library(cowplot)
+library(readxl)
+library(webshot)
+```
+
+# Summary of Injuries 
+
+As a reminder we separated our data sets into service and non service. We included the figure that explains how we are seperating the files. The numbers in the far-right column correspond to the first two digits of our NAICS codes and we used those to ensure that our service and nonservice categories were split correctly. 
+
+![NAICS Codes.](~/Documents/GitHub/DSCCapstone/figures/NAICSCodes.png)
+
+***** 
+
+For this next section of our project, we are focusing on finding a way to join the ONET data with out current OSHA data set that we are using. We are using NAICS codes to do this. Since we are going to have to manually match the NAICS codes to ONET Codes, we needed to find a way to narrow down our scope. We grouped our data by NAICS code to see how many injuries fall under each code. We set a threshold of at least 100 injuries in order for us to keep it.  
+
+The following chart shows the NAICS Codes that we are keeping and their corresponding occupation titles. We ended up keeping 38 NAICS Codes from the NonService sector and 28 from the service sector. 
+
+``` {r injuries}
+library(readr)
+NonService <- read_csv("NonService.csv", 
+    col_types = cols(EventDate = col_skip(), 
+        X1 = col_skip()))
+Service <- read_csv("Service.csv", col_types = cols(EventDate = col_skip(), 
+    ID = col_integer(), X1 = col_skip()))
+```
+
+```{r naicsDistribution}
+NonServiceNaics <- read_csv("NonServiceNaics.csv", 
+    col_types = cols(X1 = col_skip()))
+ServiceNaics <- read_csv("ServiceNaics.csv", 
+    col_types = cols(X1 = col_skip()))
+
+ServiceNaics = ServiceNaics %>%
+  select( naics_code, count, naics_title) %>%
+  rename(naics = naics_code, title = naics_title)
+
+```
+
+```{r NonSer}
+
+NonServiceNaics = NonServiceNaics[order(-NonServiceNaics$count),]
+kable( NonServiceNaics, caption = "Non Service Jobs Popular NAICS Codes")
+```
+
+
+```{r Ser}
+ServiceNaics = ServiceNaics[order(-ServiceNaics$count),]
+kable( ServiceNaics, caption = "Service Jobs Popular NAICS")
+```
+
+##How many Service and Non Service Injuries in our NAICS codes?
+
+Our original files sizes (rows):
+NonService - 18,038 
+Service - 13953
+
+We kept about 50.2% of the NonService Sector injuries and about 44.5% of the Service sector injuiries. So a fairly similar amount of injuries were preserved. 
+
+```{r}
+ser= sum(ServiceNaics$count)
+nonser = sum(NonServiceNaics$count)
+
+Sector = c( 'NonService', 'Service' )
+Count = c( nonser, ser)
+
+kable( data.frame( Sector, Count))
+```
+
+##Most popular NAICS Code Cateogries 
+
+We want to see if there is an even distribution of NAICS codes categories represented in our top NAICS codes. We did an inital check to see how 
+
+###Service 
+```{r}
+ServiceNaics$Category = substring(as.character(ServiceNaics$naics*100), 1, 2) 
+
+ServiceNaicsCateogires = ServiceNaics %>%
+  group_by(Category)%>%
+  summarize(total = sum(count))
+
+ggplot(ServiceNaicsCateogires, aes(Category, total))+geom_bar(stat = "identity", fill = "indianred4")
+```
+The most popular cateogires in the Service sector for injuries are 49, 56, and 62. These correspond to Transportation and Warehousing, Administrative and Waste Services, and health Care and Social Assistance. 
+
+###NonService 
+
+```{r}
+NonServiceNaics$Category = substring(as.character(NonServiceNaics$naics*100), 1, 2) 
+
+NonServiceNaicsCategories = NonServiceNaics %>%
+  group_by(Category)%>%
+  summarize(total = sum(count))
+
+ggplot(NonServiceNaicsCategories, aes(Category, total))+geom_bar(stat = "identity", fill = "royalblue4")
+```
+
+23 has by far the most NAICS codes in the non service sector. This categories is Consturction. Followed by category 31 which is Manufacturing. 
+
+# Summary of ONET 
+
+##Understanding
+This week we have also been focusing on getting the ONET Dataset ready for joining. There was a steep learning curve in understanding of this data. The format of the document was that each question asked and the respondant had the opporunity to choose a number between 1 and 5. The way the data was respresented was that each number, 1 through 5, was given a unique row in the data set. An Example is given below for Chief Executives.   
+
+  
+```{r importOnet}
+WorkContext <- read_excel("~/Downloads/Work Context.xlsx")
+colnames(WorkContext)[colnames(WorkContext)=="O*NET-SOC Code"] <- "onetSoc"
+colnames(WorkContext)[colnames(WorkContext)=="Element Name"] <- "elementName"
+colnames(WorkContext)[colnames(WorkContext)=="Scale Name"] <- "scaleName"
+colnames(WorkContext)[colnames(WorkContext)=="Data Value"] <- "dataValue"
+
+WorkContextShow = WorkContext %>%
+  select( onetSoc, elementName, scaleName, Category, dataValue, N )
+kable(head(WorkContext))
+```
+
+##Filtering 
+
+Once we understood how the data was formated, we really only wanted to keep the overall score for that element. This required filtering our document so that it just contained the value of Context for the column called ScaleName. This is very easy to do using the tidyverse. 
+
+
+```{r headWork}
+WorkContext = WorkContext %>%
+  filter( scaleName == "Context")
+```
+
+##Reshaping 
+
+Now that our data is formated and filtered the way we want it to be, we need to reshape our data so each job is a unique row. Each job will now have a column for each of the questions asked, and that jobs score. We used a packaged called reshape two, and a command called dcast to accomplish this. 
+
+```{r meltOnet}
+WorkContext= dcast(WorkContext, onetSoc + Title ~ elementName, value.var= "dataValue" )
+
+WorkContextChiefExec = WorkContext %>%
+  filter(Title == "Chief Executives")
+kable(WorkContextChiefExec)
+```
+##Check for Nulls in Rows 
+
+```{r}
+NullDF <- WorkContext[rowSums(is.na(WorkContext)) > 0,]
+nrow(NullDF)
+NullDF$Title
+```
+
+There only seems to be one job that has any nulls in it, this is for Mathematical Technicians. I think it is safe to remove that value, as I dont think it comes up in our injury data set. 
+
+```{r}
+WorkContext = WorkContext[complete.cases(WorkContext), ]
+```
+
+##Total Jobs 
+
+How many jobs do we have information for now? 
+
+```{r}
+nrow(WorkContext)
+```
+
+#Next Deliverable
+
+##Milestone 2- Joining NAICS Codes to connect Data from the ONET Table
+
+```{r}
+
+```
+
+Postal service is a 6 digit NAICS Code which is all that we have OSHA database so we are aggregating some of the ONET Data if there are more tbhan one job that 
+- how we are going to join NAICS code- what is our current plan 
+- How long do we think it will take us 
+- Basic facts about why that is interesting and why we think ONET 
+
+### Potential Issues Issues 
+
+ - Multiple applicable occupations for each NAICS Code some 
+ - NAICS sometimes these are how 
+ 
+####Examples:
+ 
+ Easy Example- 
+ 
+ Electric Power Distribution System NAICS Code - 221122
+ ONET Occupation - Power Distributers and Dispatchers - 51-8012.00
+ 
+ Hard Example - 
+ Postal Service -  multiple different types of jobs that fall under this sector. Some are much more than others
+ 
+ Postal Service NAICS Code - 491110
+ ONET Occupations - Postal Service Clerks 
+ - Postal Service Mail Carriers
+ - Postal Service Mail Sorters
+ - Processors 
+ - Processing Machine Operators 
+ 
+ 
+### Personal Tasks
+Alli - R Coding to join data sets and creating markdowns to document process 
+Kim - Working on manually matching NAICS codes to ONET Codes
+Kashed - Working on manually matching NAICS codes to ONET Codese
+Tyler - 
+
+ 
+##Milestone 3 - Create interactive Dashbaord with our visualizations 
+
+ 
+```{r}
+
+```
+ 
+ 
+
+
