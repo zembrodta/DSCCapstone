@@ -1,39 +1,39 @@
-"","naics","count"
-"1",213111,243
-"2",213112,680
-"3",236115,121
-"4",236210,257
-"5",236220,618
-"6",237110,220
-"7",237120,173
-"8",237130,183
-"9",237310,456
-"10",237990,169
-"11",238110,234
-"12",238120,251
-"13",238130,151
-"14",238140,174
-"15",238160,444
-"16",238210,557
-"17",238220,406
-"18",238290,112
-"19",238310,162
-"20",238320,121
-"21",238910,224
-"22",238990,271
-"23",311611,195
-"24",311612,169
-"25",311615,313
-"26",311812,166
-"27",311999,137
-"28",312111,109
-"29",321113,260
-"30",321920,123
-"31",326199,290
-"32",327390,122
-"33",331210,107
-"34",332312,201
-"35",332322,118
-"36",332710,151
-"37",332999,162
-"38",336611,211
+,naics,count,title
+1,213111,243,Drilling Oil and Gas Wells
+2,213112,680,Support Activities for Oil and Gas Operations
+3,236115,121,New Single-Family General Contractors
+4,236210,257,Industrial Building Construction
+5,236220,618,Commercial Building Construction
+6,237110,220,Water and Sewer System Construction
+7,237120,173,Oil and Gas Pipeline Construction
+8,237130,183,Power and Communication System Construction
+9,237310,456,"Highway, Street and Bridge Construction"
+10,237990,169,Other Heavy Construction
+11,238110,234,Poured Concrete Foundation and Structure Contractors
+12,238120,251,Structural Steel and Precast Concrete Contractors 
+13,238130,151,Framing Contractors 
+14,238140,174,Masonry Contractors 
+15,238160,444,Roofing Contractors 
+16,238210,557,Electrical Contractors and Other Wiring Installation Contractors
+17,238220,406,"Plumbing, Heating, and Air-Conditioning Contractors "
+18,238290,112,Other Building Equipment Contractors 
+19,238310,162,Drywall and Insulation Contractors 
+20,238320,121,Painting and Wall Covering Contractors
+21,238910,224,Site Preparation Contractors
+22,238990,271,All Other Specialty Trade Contractors
+23,311611,195,Animal (except Poultry) Slaughtering 
+24,311612,169,Meat Processed from Carcasses 
+25,311615,313,Poultry Processing 
+26,311812,166,Commercial Bakeries 
+27,311999,137,All Other Miscellaneous Food Manufacturing 
+28,312111,109,Soft Drink Manufacturing 
+29,321113,260,Sawmills
+30,321920,123,Wood Container and Pallet Manufacturing
+31,326199,290,All Other Plastics Product Manufacturing 
+32,327390,122,Other Concrete Product Manufacturing 
+33,331210,107,Iron and Steel Pipe and Tube Manufacturing from Purchased Steel
+34,332312,201,Fabricated Structural Metal Manufacturing 
+35,332322,118,Sheet Metal Work Manufacturing 
+36,332710,151,Machine Shops
+37,332999,162,All Other Miscellaneous Fabricated Metal Product Manufacturing 
+38,336611,211,Ship Building and Repairing 

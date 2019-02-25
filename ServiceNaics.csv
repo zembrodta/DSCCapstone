@@ -1,0 +1,29 @@
+,naics_code,naics_title,naics_desc,onet_code,onet_title,onet_desc,count
+1,221122,Electric Power Distribution,"This U.S. industry comprises electric power establishments primarily engaged in either (1) operating electric power distribution systems (i.e., consisting of lines, poles, meters, and wiring) or (2) operating as electric power brokers or agents that arrange the sale of electricity via power distribution systems operated by others.",51-8012.00,Power Distributors and Dispatchers,"Coordinate, regulate, or distribute electricity or steam.",133
+2,423310,"Lumber, Plywood, Millwork, and Wood Panel Merchant Wholesalers ",,,,,101
+3,423510,Metal Service Centers and Other Metal Merchant Wholesalers ,,,,,127
+4,423930,Recyclable Material Merchant Wholesalers ,,,,,162
+5,424410,General Line Grocery Merchant Wholesalers ,,,,,123
+6,424510,Grain and Field Bean Merchant Wholesalers ,,,,,102
+7,444110,Home Centers,,,,,133
+8,445110,Supermarkets and Other Grocery (except Convenience) Stores ,,,,,614
+9,452111,Department Stores (except Discount),,,,,124
+10,452112,Discount Department Stores,,,,,104
+11,452910,Warehouse Clubs and Supercenters,,,,,110
+12,453998,Store Retailers (not specified elsewhere),,,,,141
+13,484110,General Freight Trucking (local),,,,,181
+14,484121,General Freight Trucking (long-distance tl),,,,,287
+15,488320,Marine Cargo Handling,,,,,142
+16,491110,Postal Service,"This industry comprises establishments primarily engaged in providing mail services under a universal service obligation.  Mail services include the carriage of letters, printed matter, or mailable packages, including acceptance, collection, processing, and delivery.  Due to the infrastructure requirements of providing mail service under a universal service obligation, postal service establishments often provide parcel and express delivery services in addition to the mail service.  Establishments primarily engaged in performing one or more parts of the basic mail service, such as sorting, routing and/or delivery (except bulk transportation of mail) are included in this industry.",,,,571
+17,492110,Couriers and Express Delivery Services,,,,,157
+18,493110,General Warehousing and Storage,,,,,373
+19,561320,Temporary Help Services,,,,,316
+20,561720,Janitorial Services,,,,,158
+21,561730,Landscaping Services,,,,,327
+22,562111,Solid Waste Collection,,,,,171
+23,622110,General Medical and Surgical Hospitals,,,,,748
+24,623110,Nursing Care Facilities (Skilled Nursing),,,,,194
+25,713110,Amusement and Theme Parks,,,,,121
+26,721110,Hotels and Motels (except casino hotels),,,,,188
+27,811310,Commercial Machinery Repair and Maintenance,,,,,167
+28,928110,National Security,,,,,148

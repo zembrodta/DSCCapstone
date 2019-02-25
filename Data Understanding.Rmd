@@ -39,14 +39,7 @@ For this next section of our project, we are focusing on finding a way to join t
 
 The following chart shows the NAICS Codes that we are keeping and their corresponding occupation titles. We ended up keeping 38 NAICS Codes from the NonService sector and 28 from the service sector. 
 
-``` {r injuries}
-library(readr)
-NonService <- read_csv("NonService.csv", 
-    col_types = cols(EventDate = col_skip(), 
-        X1 = col_skip()))
-Service <- read_csv("Service.csv", col_types = cols(EventDate = col_skip(), 
-    ID = col_integer(), X1 = col_skip()))
-```
+
 
 ```{r naicsDistribution}
 NonServiceNaics <- read_csv("NonServiceNaics.csv", 
